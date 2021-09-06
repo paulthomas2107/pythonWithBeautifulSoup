@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import re
 
 with open("index.html", "r") as f:
     doc = BeautifulSoup(f, "html.parser")
@@ -33,3 +34,41 @@ parent = prices[0].parent
 strong = parent.find("strong")
 print(strong)
 print(strong.string)
+
+
+with open("index2.html", "r") as f:
+    doc = BeautifulSoup(f, "html.parser")
+
+tag = doc.find("option")
+tag['value'] = 'new value'
+print(tag)
+
+tags = doc.find_all(["p", "div", "li"])
+print(tags)
+
+tags = doc.find_all(["option"], text="Undergraduate")
+print(tags)
+
+tags = doc.find_all(["option"], text="Undergraduate", value="undergraduate")
+print(tags)
+
+tags = doc.find_all(class_="btn-item")
+print(tags)
+
+tags = doc.find_all(text=re.compile("\$.*"))
+for tag in tags:
+    print(tag.strip())
+
+tags = doc.find_all(text=re.compile("\$.*"), limit=1)
+for tag in tags:
+    print(tag.strip())
+
+tags = doc.find_all("input", type="text")
+for tag in tags:
+    tag['placeholder'] = 'I changed You !'
+with open("changed.html", "w") as file:
+    file.write(str(doc))
+
+
+
+
