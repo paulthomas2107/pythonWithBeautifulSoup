@@ -70,5 +70,26 @@ with open("changed.html", "w") as file:
     file.write(str(doc))
 
 
+url ="https://coinmarketcap.com/"
+result = requests.get(url).text
+doc = BeautifulSoup(result, "html.parser")
+
+# Get crypto prices
+tbody = doc.tbody
+trs = tbody.contents
+
+prices = {}
+
+for tr in trs[:10]:
+    name, price = tr.contents[2:4]
+    fixed_name = name.p.string
+    fixed_price = price.a.string
+    prices[fixed_name] = fixed_price
+
+print(prices)
+
+
+
+
 
 
